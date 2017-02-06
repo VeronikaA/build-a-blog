@@ -34,7 +34,7 @@
     </head>
     <body>
         <h1>
-            <a href="/">My Blog!</a>
+            <a href="/">Hello,This is My Blog!</a>
         </h1>
 
         {% block content %}
