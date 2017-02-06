@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Build-a-blog</title>
+    <style type= "text/css">
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href= "/blog">home</a>
+      <a href= "/blog/newpost">new post</a>
+    </nav>
+    <h1>new post</h1>
+    <h1>blog!<h1>
+      <h2>
+        <a href ="/blog/hello">test</a>
+      </h2>
+      <p>Test post to blog </p>
+      <h2>
+        <a href= "/blog/greetings">greetings</a>
+      </h2>
+        <p>more text</p>
+      <h2>
+        <a href= "/blog/adding more">another test</a>
+      </h2>
+      <p>so many test,so little time</p>
+      <h2>
+        <a href= "/blog/once more">23 skidoo</a>
+      </h2>
+      <p>11</p>
+      <h2>
+        <a href="/blog/trying">coding test</a>
+      </h2>
+      <p> code</p>
+      <a href= "/blog? page=1"><prev</a>
+        <a href= "/blog? page= 3">next ></a>
+        </body>
+      </html>
+
+
+    <form method ="post">
+      <label>
+        <div> title</div>
+        <input name ="title" value ="" type= "text">
+      </label>
+      <label>
+        <div> post </div>
+        <textarea name = "body"></textarea>
+      </label>
+      <div class ="error"></div>
+      <input type= "submit">
+    </form>
+   </body>
+ </html>
+
+
+
+    

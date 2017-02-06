@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    <a href="/newpost"> Write a new post
+    </a>
+</h2>
+
+<h2>
+    <a href="/blog"> View latest posts
+    </a>
+</h2>
+
+{% endblock %}
