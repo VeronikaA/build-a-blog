@@ -34,7 +34,7 @@ class Handler(webapp2.RequestHandler):
 
 class Main(Handler):
     """ Handles requests coming in to '/'
-        e.g. www.carlysblog.com/
+        e.g. www.veronikasblog.com/
     """
     def render_main(self):
         self.render("frontpage.html")
@@ -44,7 +44,7 @@ class Main(Handler):
 
 class Blog(Handler):
     """ Handles requests coming in to '/blog'
-        e.g. www.carlysblog.com/blog
+        
     """
 
     def render_blog(self, posts=""):
@@ -56,7 +56,7 @@ class Blog(Handler):
 
 class NewPost(Handler):
     """ Handles requests coming in to '/newpost'
-        e.g. www.carlysblog.com/newpost
+        
     """
     def render_new_post_page(self, title="", content="", error=""):
         self.render("newpost.html", title=title, content=content, error=error)
