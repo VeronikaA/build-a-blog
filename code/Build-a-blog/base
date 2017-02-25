@@ -1,43 +1,69 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Veronika's Blog</title>
-        <style type="text/css">
-            body {
-                font-family: sans-serif;
-                width: 800px;
-                margin: 0 auto;
-                padding: 10px;
-            }
-            .error {
-                color: red;
-            }
-            label{
-                display: block;
-                font-size: 20px;
-            }
-            input[type=text]{
-                width: 400px;
-                font-size: 20px;
-                padding: 2px;
-            }
-            textarea{
-                width: 400px;
-                height: 200px;
-                font-size: 17px;
-                font-family:monospace;
-            }
-            input[type=submit]{
-                font-size: 24px;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>
-            <a href="/">Hello,This is My Blog!</a>
-        </h1>
+  <head>
+      <title> Blog Base Page </title>
+      <style type ="text/css">
+      body {
+        font-family: sans-seriff;
+        width: 800px;
+        margin: 0 auto         
+        padding: 10px;
+      }
 
-        {% block content %}
-        {% endblock %}
-    </body>
+      .error{
+        color:red
+      }
+
+      label{
+        display:block;
+        font-size 20px;
+      }
+
+      input[type = text]{
+        width: 400px;
+        font-size: 20px;
+        padding: 2px;
+      }
+
+      textarea{
+        width: 400px;
+        height:200px;
+        font-size: 17px;
+        font-family: monospace;
+      }
+      input[type =submit]{
+        font-size 24px;
+      }
+
+      hr{
+        margin: 20px auto;
+      }
+      /*art + .art{*/
+      post + .post{
+        margin-top: 20px;
+      }
+
+      .post-title{
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      /*.art-body{*/
+      .post-body{
+        margin: 0;
+        font-size: 17px;
+      }
+      </style>
+  </head>
+
+  <body>
+    <!-- <h1> Blog <base href="#" target="_blank"> Page </h1> -->
+    <h1> Blog  </h1>
+<!--link takes opens newpost.html page; url /blog/newpost -->
+    <a href = "/Blog/newpost" > New Post </a>
+  {% block content %}
+
+  {% endblock %}
+
+  </body>
 </html>
