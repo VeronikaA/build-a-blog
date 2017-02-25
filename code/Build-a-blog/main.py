@@ -1,96 +1,83 @@
-import webapp2
-import cgi
-import jinja2
 import os
+import webapp2
+import jinja2   #the template language used to render the html
+
 from google.appengine.ext import db
 
-# set up jinja
-template_dir = os.path.join(os.path.dirname(__file__), "templates")
+#use templates instead of string substitutions; autoescapes are used for each variable
+template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
-                                autoescape=True)
-
-#def blog_key:
-    #return db.Key.from_path('blogs', name)
-
-class BlogPost(db.Model):
-    created = db.DateTimeProperty(auto_now_add = True)
-    title = db.StringProperty(required = True)
-    content = db.TextProperty(required = True)
-
-    #def render(self):
-        #self.render_text = self.content.replace('\n', '<br>')
-        #return render_str("post.html", p=self)
+                                autoescape=True)  #automaticaly auto escapes  all user input fields
 
 class Handler(webapp2.RequestHandler):
+
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
 
+    #takes a template and returns a string of the rendered template
     def render_str(self, template, **params):
-        t = jinja_env.get_template(template)
+        t = jinja_env.get_template(template)  #calls jinja to load file name stored in (template)
         return t.render(params)
 
-    def render (self, template, **kw):
+    #writes the string
+    def render(self, template, **kw):   #pass the template, and the fields to single.HTML TEMPLATE -SEE FLICKLIST6
         self.write(self.render_str(template, **kw))
 
-class Main(Handler):
-    """ Handles requests coming in to '/'
-        e.g. www.veronikasblog.com/
-    """
-    def render_main(self):
-        self.render("frontpage.html")
+#====add the database -Define the entity by creating a class; inherits from import db, model defines the id
+class Post(db.Model):
+     # "required = True" is a constratint:indicates that a StringProperty is
+    #  required to create an instance of Post class
+    title = db.StringProperty(required = True)
+    post = db.TextProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
 
+#writes output to the browser
+class MainPage(Handler):
+     #render forms while preserving fields
+    def render_front(self):
+        posts = db.GqlQuery("SELECT * FROM Post "         #throws an ERROR if there's not a space after Post and ending quote
+                            "ORDER BY created DESC limit 5 ")
+        # pass infornation to our template
+        self.render("front.html", posts = posts)
+
+    #render the blank form
     def get(self):
-        self.render_main()
-
-class Blog(Handler):
-    """ Handles requests coming in to '/blog'
-        e.g. www.veronikasblog.com/blog
-    """
-
-    def render_blog(self, posts=""):
-        posts = db.GqlQuery("SELECT * FROM BlogPost ORDER BY created DESC LIMIT 5")
-        self.render("blog.html", posts=posts)
-
-    def get(self):
-        self.render_blog()
+        self.render_front()
 
 class NewPost(Handler):
-    """ Handles requests coming in to '/newpost'
-        e.g. www.veronikasblog.com/newpost
-    """
-    def render_new_post_page(self, title="", content="", error=""):
-        self.render("newpost.html", title=title, content=content, error=error)
-
+     #render forms while preserving fields
+    def render_newpost(self, title = "", post = "", error = ""):
+        self.render("newpost.html", title = title, post = post, error = error)
+    #render the blank form
     def get(self):
-        self.render_new_post_page()
+        self.render_newpost()
 
     def post(self):
-        title = self.request.get("title")
-        content = self.request.get("content")
+        title = self.request.get("title")  #what user typed
+        post = self.request.get("post")
 
-        if title and content:
-            # construct a post object for the new post
-            post = BlogPost(title = title, content = content)
-            post.put()
-
-            # render the confirmation message
-            t = jinja_env.get_template("add-confirmation.html")
-            response = t.render(post = post)
-            self.response.write(response)
-        # if the user typed nothing at all, redirect and yell at them
+        if title and post:
+            a = Post(title = title, post = post) #creating a new instance of art (datetime is autocreated so no need to pass it in)
+            a.put() #stores new art object in the database
+            blogid = a.key().id()
+            self.redirect("/Blog/%s"% str(blogid))
         else:
-            error = "Please add both a title and some content."
-            self.render_new_post_page(title, content, error)
+            error = "we need both a title and post!."
+        # renders form with the error message; if error,return what was entered plus error message
+            self.render_newpost(title, post, error)
 
-class ViewPostHandler(webapp2.RequestHandler):
+class BlogPage(Handler):
     def get(self, id):
-        post_id = BlogPost.get_by_id(int (id))
-        self.response.write(post_id.title + "<br>" + post_id.content)
-
+        #look up the blog post: get id using function get_by_id & convert id to integer
+        blogpost = Post.get_by_id(int(id))
+        if blogpost == None:
+            error = "The id is not valid"
+            self.response.write(error)
+        else:
+            self.render("blogPage.html", blogpost=blogpost)
 
 app = webapp2.WSGIApplication([
-    ('/', Main),
-    ('/blog', Blog),
-    ('/newpost', NewPost),
-    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
-], debug=True)
+    ('/', MainPage),
+    webapp2.Route('/Blog/<id:\d+>', BlogPage),
+    ('/Blog/newpost', NewPost)
+    ], debug=True)
