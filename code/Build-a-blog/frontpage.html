@@ -1,14 +1,12 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h2>
-    <a href="/newpost"> Write a new post
-    </a>
-</h2>
 
-<h2>
-    <a href="/blog"> View latest posts
-    </a>
-</h2>
-
+<!-- accessing the query. Curly brackets used by jinja2 to separate html from python  -->
+      {% for post in posts %}
+        <div class = "post">
+          <!-- <div class = "post-title">{{post.title}} </div> -->
+          <h2>  <a href = "/Blog/{{post.key().id()}}">{{post.title}} </a> </h2>
+          <div class = "post-body">{{post.post}}</div>
+        </div>
+      {% endfor %}
 {% endblock %}
