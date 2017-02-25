@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+<h1> NEW POST</h1>
 
-{% block content %}
+<form method="post">
+  <label>
+    <div>title</div>
+    <input type = "text" name = "title" value ={{title}}>
+  </label>
 
-<form action="/newpost" method="post">
-    <label>
-        <div>New Blog Post Title:</div>
-        <input type="text" name="title" value="{{title}}"/>
-    </label>
-    <label>
-        <div>New Blog Post Content:</div>
-        <textarea name="content">{{content}}</textarea>
-    </label>
-    <input type="submit" value="Publish!"/>
+  <label>
+    <div> Post </div>
+    <!-- <textarea name="art">{{art}}</textarea> -->
+    <textarea name="post">{{post}}</textarea>
+  </label>
+  <div class="error">{{error}}</div>
+  <input type ="submit">
+
 </form>
-
-<p class="error">{{ error if error else "" }}</p>
 {% endblock %}
